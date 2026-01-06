@@ -1,5 +1,7 @@
+# if the IAM Role is exist into your cloud then use this block
+
 data "aws_iam_role" "lambda_role" {
-  name = "lambda-admin"
+  name = "lambda-admin"          
 }
 
 resource "aws_lambda_function" "my_lambda" {
