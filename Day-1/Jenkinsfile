@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+   parameters {
+        choice(
+            name: 'ACTION',
+            choices: ['apply', 'destroy'],
+            description: 'Select Terraform action'
+        )
+    }
+
+    stages {
+        stage('git clone') {
+            steps {
+               git branch: 'main', url: 'https://github.com/amit6264/Terraform.git'
+            }
+        }
+        stage('terraform init') {
+            steps {
+               dir('Day-1'){
+                   sh 'terraform init'
+               }
+            }
+        }
+        stage('terraform plan') {
+            steps {
+              dir('Day-1'){
+                  sh 'terraform plan'
+              }
+            }
+        }
+        stage('terraform apply/destroy') {
+            steps {
+               dir('Day-1'){
+                   sh 'terraform ${ACTION} -auto-approve'
+               }
+            }
+        }
+    }
+}
