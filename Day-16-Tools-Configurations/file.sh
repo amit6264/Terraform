@@ -46,7 +46,19 @@ sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/lat
 sudo mv /tmp/eksctl /usr/local/bin
 
 #----------------------Trivy install---------------
-sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.48.3/trivy_0.48.3_Linux-64bit.rpm
+#sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.48.3/trivy_0.48.3_Linux-64bit.rpm
+sudo dnf update -y
+sudo rpm --import https://aquasecurity.github.io/trivy-repo/rpm/public.key
+sudo tee /etc/yum.repos.d/trivy.repo <<'EOF'
+[trivy]
+name=Trivy repository
+baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://aquasecurity.github.io/trivy-repo/rpm/public.key
+EOF
+sudo dnf install trivy -y
+trivy --version
 
 #----------------------sonarQube install-----------------------------------
 sudo yum -y install wget nfs-utils
